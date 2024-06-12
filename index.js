@@ -6,7 +6,7 @@ window.addEventListener('load', () => {
     let nextBtn = document.querySelector('.btn.next');
     let prevBtn = document.querySelector('.btn.prev');
     let dataParsed = getData();
-    btnDisabler(dataParsed);
+    btnDisabler(dataParsed || { pages: [] });
 
     if (dataParsed) {
         draw(dataParsed);
