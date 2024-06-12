@@ -20,7 +20,11 @@ window.addEventListener('load', () => {
 
 function draw(dataParsed = getData()) {
     if (!dataParsed.pages) {
+        loaderToggler('close');
         return;
+    } else if (!dataParsed.pages[dataParsed.curPage] || dataParsed.pages[dataParsed.curPage].length <= 0) {
+        loaderToggler('close');
+        return loadData(url);
     }
     let table = document.querySelector('.table');
     let paginationCount = document.querySelector('.pagination-wrapper .pages-count');
@@ -266,15 +270,27 @@ function sortBy(id) {
     if (dataParsed.sortOrder === null || dataParsed.sortCol !== id || dataParsed.sortOrder === 'desc') {
         dataParsed.sortCol = id;
         dataParsed.sortOrder = 'asc';
-        allPages.sort((a, b) => {
-            if (a[id] < b[id]) {
-                return -1;
-            }
-            if (a[id] > b[id]) {
-                return 1;
-            }
-            return 0;
-        })
+        if (id === "height" || id === "mass") {
+            allPages.sort((a, b) => {
+                if (Number(a[id]) < Number(b[id])) {
+                    return -1;
+                }
+                if (Number(a[id]) > Number(b[id])) {
+                    return 1;
+                }
+                return 0;
+            })
+        } else {
+            allPages.sort((a, b) => {
+                if (a[id] < b[id]) {
+                    return -1;
+                }
+                if (a[id] > b[id]) {
+                    return 1;
+                }
+                return 0;
+            })
+        }
     } else {
         dataParsed.sortOrder = 'desc';
         allPages.reverse();
