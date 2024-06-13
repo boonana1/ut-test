@@ -156,16 +156,6 @@ function setTableEvents(tbody) {
     };
 };
 
-function getNextElement(cursorPosition, currentElement) {
-    const currentElementCoord = currentElement.getBoundingClientRect();
-    const currentElementCenter = currentElementCoord.y + currentElementCoord.height / 2;
-
-    return (cursorPosition < currentElementCenter ||
-        (cursorPosition > currentElementCenter && cursorPosition < currentElementCoord.bottom))
-        ? currentElement
-        : currentElement.nextElementSibling || currentElement;
-};
-
 function loadData(url) {
     loaderToggler('open');
     fetch(url)
@@ -303,20 +293,6 @@ function sortBy(id) {
     })
     localStorage.setItem('ut-test-data', JSON.stringify(dataParsed));
     draw(dataParsed);
-}
-
-function move(from, to) {
-    let dataParsed = getData();
-    const toMove = dataParsed.pages[dataParsed.curPage][from];
-
-    const newArr = [
-        ...dataParsed.pages[dataParsed.curPage].slice(0, from),
-        ...dataParsed.pages[dataParsed.curPage].slice(from + 1)
-    ];
-    newArr.splice(to, 0, toMove);
-    dataParsed.pages[dataParsed.curPage] = newArr;
-
-    localStorage.setItem('ut-test-data', JSON.stringify(dataParsed));
 }
 
 const createResizableTable = (table) => {
